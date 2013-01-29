@@ -41,7 +41,7 @@ class tx_jftcaforms_tceFunc
 	 */
 	public function getExtSlider($PA, &$fObj)
 	{
-		$checkboxCode = null;
+		$checkboxCode = NULL;
 
 		// Define the unique vars
 		$id_slider = uniqid('tceforms-slider-');
@@ -70,13 +70,14 @@ class tx_jftcaforms_tceFunc
 		// 
 		$default = (is_numeric($conf['default']) ? $conf['default'] : $lower);
 		$value = (is_numeric($PA['itemFormElValue']) ? $PA['itemFormElValue'] : $default);
+
 		$option[] = "value: ".$value;
 
 		$emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
 		if (! is_numeric($PA['itemFormElValue']) && $emptyValue) {
-			$disabled = true;
+			$disabled = TRUE;
 		} else {
-			$disabled = false;
+			$disabled = FALSE;
 		}
 
 		$option[] = "disabled: ".($disabled ? 'true' : 'false');
@@ -99,7 +100,7 @@ class tx_jftcaforms_tceFunc
 				var v = this.maxValue - this.minValue;
 				return (v == 0 ? w : (w/v));
 			}
-		});", true);
+		});", TRUE);
 
 		// Add the slider
 		$pagerender->addExtOnReadyCode("
@@ -195,9 +196,9 @@ class tx_jftcaforms_tceFunc
 
 			$emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
 			if (! is_numeric($PA['itemFormElValue']) && $emptyValue) {
-				$disabled = true;
+				$disabled = TRUE;
 			} else {
-				$disabled = false;
+				$disabled = FALSE;
 			}
 
 			$option[] = "disabled: ".($disabled ? 'true' : 'false');
@@ -241,7 +242,69 @@ class tx_jftcaforms_tceFunc
 			'</div>';
 		}
 	}
+
+
+	/**
+	 * This will render a color-picker tt the tca.
+	 * 
+	 * @param	array		$PA An array with additional configuration options.
+	 * @param	object		$fobj TCEForms object reference
+	 * @return	string		The HTML code for the TCEform field
+	 */
+	public function getColorPicker($PA, &$fObj)
+	{
+		$conf = $PA['fieldConf']['config'];
+
+		$id_picker = uniqid('tceforms-colorpicker-');
+		$id_checkbox = uniqid('tceforms-check-');
+
+		$value = ($PA['itemFormElValue'] ? $PA['itemFormElValue'] : '');
+		$value = str_replace('#', '', $value);
+		if ($value == 'on') {
+			$value = '';
+		}
+
+		$emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
+		if (! $value && $emptyValue) {
+			$disabled = TRUE;
+		} else {
+			$disabled = FALSE;
+		}
+		if ($emptyValue) {
+			$checkboxCode = '<input type="checkbox" class="checkbox" id="'.$id_checkbox.'" name="'.$PA['itemFormElName'].'_cb"'.($disabled ? ' checked="checked"' : '').' />';
+			$checkboxObserve = "
+Event.observe('{$id_checkbox}', 'change', function(event){
+	if (this.checked) {
+		$('{$id_picker}').value = '';
+	}
+	$('{$id_picker}').disabled = this.checked;
+});";
+		}
+
+		// get the pagerenderer
+		$pagerender = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+
+		// Add the colorpicker scripts
+		$pagerender->addCssFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/colorpicker/css/colorpicker.css');
+		$pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/colorpicker/js/colorpicker.js', 'text/javascript', FALSE);
+
+		// Add the colorpicker
+		$pagerender->addExtOnReadyCode("
+var cp".md5($id_picker)." = new colorPicker('{$id_picker}',{
+	color:'#".($value ? $value : '000000')."'
+});{$checkboxObserve}");
+
+		return '' .
+		'<div class="t3-form-field t3-form-field-flex">' .
+			'<table><tr><td>' .
+				$checkboxCode .
+			'</td><td>' .
+				'#<input type="text" name="'.$PA['itemFormElName'].'" id="'.$id_picker.'" value="'.$value.'" size="6"'.($disabled ? ' disabled="disabled"' : '').' />' .
+			'</td></tr></table>' .
+		'</div>';
+	}
 }
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/jftcaforms/lib/class.tx_jftcaforms_tceFunc.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/jftcaforms/lib/class.tx_jftcaforms_tceFunc.php']);
