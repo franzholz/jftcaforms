@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array (
 	'description' => 'Provides additional TCA Forms for the backend. At this moment these forms are supported: Slider',
 	'category' => 'be',
 	'shy' => 0,
-	'version' => '0.0.1',
+	'version' => '0.0.2',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -38,7 +38,7 @@ $EM_CONF[$_EXTKEY] = array (
 		array (
 			'cms' => '',
 			'php' => '5.0.0-5.3.99',
-			'typo3' => '4.3.0-4.4.99',
+			'typo3' => '4.3.0-4.5.99',
 		),
 		'conflicts' => 
 		array (
