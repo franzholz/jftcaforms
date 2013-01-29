@@ -149,7 +149,7 @@ class tx_jftcaforms_tceFunc
 	public function getExtSpinner($PA, &$fObj)
 	{
 		$conf = $PA['fieldConf']['config'];
-		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+		if (class_exists(t3lib_utility_VersionNumber) && t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 			// Fallback if the used Typo3 Version is older then 4.5
 			t3lib_div::devLog("ExtSpinner available in Typo3 4.5.x", 'jftcaform', 3);
 			$upper = (is_numeric($conf['range']['upper']) ? $conf['range']['upper'] : '100');
