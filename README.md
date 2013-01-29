@@ -1,16 +1,16 @@
 # TYPO3 Extension "jftcaforms"
 Provides additional TCA Forms for the backend. At this moment these forms are supported: Slider
 
-## Version 0.2.0
-** BE AWARE: This extension has been marked as insecure by the security team! **.
+## Version 0.2.1
+
 
 
 
 <table>
-	<tr><td>Version</td><td>0.2.0 beta</td></tr>
-	<tr><td>Release date</td><td>30. August 2011</td></tr>
+	<tr><td>Version</td><td>0.2.1 beta</td></tr>
+	<tr><td>Release date</td><td>02. September 2011</td></tr>
 	<tr><td>Author</td><td>Juergen Furrer</td></tr>
-	<tr><td>Comment</td><td>Add color picker (29103)</td></tr>
+	<tr><td>Comment</td><td>Security fix, please upgrade!</td></tr>
 </table>
 
 ## !! Attention !!

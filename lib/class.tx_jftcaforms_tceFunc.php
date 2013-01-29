@@ -164,7 +164,7 @@ class tx_jftcaforms_tceFunc
 				'eval' => 'int',
 			);
 			if (isset($conf['default'])) {
-				$PA['fieldConf']['config']['default'] = $conf['default'];
+				$PA['fieldConf']['config']['default'] = intval($conf['default']);
 			}
 			if (isset($conf['emptyValue'])) {
 				$PA['fieldConf']['config']['checkbox'] = $conf['emptyValue'];
@@ -260,7 +260,8 @@ class tx_jftcaforms_tceFunc
 
 		$value = ($PA['itemFormElValue'] ? $PA['itemFormElValue'] : '');
 		$value = str_replace('#', '', $value);
-		if ($value == 'on') {
+		if (strlen($value) > 0 && ! preg_match("/[0-9a-f]{6}/i", $value)) {
+			t3lib_div::devLog('Value "'.$value.'" is no valid HEX-value', 'jftcaforms', 1);
 			$value = '';
 		}
 
@@ -270,9 +271,11 @@ class tx_jftcaforms_tceFunc
 		} else {
 			$disabled = FALSE;
 		}
+
+		$checkObserve = NULL;
 		if ($emptyValue) {
 			$checkboxCode = '<input type="checkbox" class="checkbox" id="'.$id_checkbox.'" name="'.$PA['itemFormElName'].'_cb"'.($disabled ? ' checked="checked"' : '').' />';
-			$checkboxObserve = "
+			$checkObserve .= "
 Event.observe('{$id_checkbox}', 'change', function(event){
 	if (this.checked) {
 		$('{$id_picker}').value = '';
@@ -280,6 +283,14 @@ Event.observe('{$id_checkbox}', 'change', function(event){
 	$('{$id_picker}').disabled = this.checked;
 });";
 		}
+		$checkObserve .= "
+Event.observe('{$id_picker}', 'change', function(event){
+	var reg = /[0-9a-f]{6}/i;
+	if (! reg.test($('{$id_picker}').value)) {
+		$('{$id_picker}').value = '';
+	}
+	$('{$id_picker}').value = $('{$id_picker}').value.toLowerCase();
+});";
 
 		// get the pagerenderer
 		$pagerender = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
@@ -292,14 +303,14 @@ Event.observe('{$id_checkbox}', 'change', function(event){
 		$pagerender->addExtOnReadyCode("
 var cp".md5($id_picker)." = new colorPicker('{$id_picker}',{
 	color:'#".($value ? $value : '000000')."'
-});{$checkboxObserve}");
+});{$checkObserve}");
 
 		return '' .
 		'<div class="t3-form-field t3-form-field-flex">' .
 			'<table><tr><td>' .
 				$checkboxCode .
 			'</td><td>' .
-				'#<input type="text" name="'.$PA['itemFormElName'].'" id="'.$id_picker.'" value="'.$value.'" size="6"'.($disabled ? ' disabled="disabled"' : '').' />' .
+				'#<input type="text" name="'.$PA['itemFormElName'].'" id="'.$id_picker.'" value="'.$value.'" size="6"'.($disabled ? ' disabled="disabled"' : '').' onfocus="blur()" />' .
 			'</td></tr></table>' .
 		'</div>';
 	}
