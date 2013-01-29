@@ -3,7 +3,7 @@
 /***************************************************************
  * Extension Manager/Repository config file for ext "jftcaforms".
  *
- * Auto generated 29-01-2013 16:26
+ * Auto generated 29-01-2013 16:27
  *
  * Manual updates:
  * Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array (
 	'description' => 'Provides additional TCA Forms for the backend. At this moment these forms are supported: Slider',
 	'category' => 'be',
 	'shy' => 0,
-	'version' => '0.2.4',
+	'version' => '0.2.5',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -38,7 +38,7 @@ $EM_CONF[$_EXTKEY] = array (
 		array (
 			'cms' => '',
 			'php' => '5.0.0-0.0.0',
-			'typo3' => '4.3.0-4.99.999',
+			'typo3' => '4.3.0-0.0.0',
 		),
 		'conflicts' => 
 		array (

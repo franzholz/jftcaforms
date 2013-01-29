@@ -255,8 +255,10 @@ class tx_jftcaforms_tceFunc
 	{
 		$conf = $PA['fieldConf']['config'];
 
+		$pickerObj = uniqid('ColorPicker');
 		$id_picker = uniqid('tceforms-colorpicker-');
 		$id_checkbox = uniqid('tceforms-check-');
+		$preview = uniqid('tceforms-preview-');
 
 		$value = ($PA['itemFormElValue'] ? $PA['itemFormElValue'] : '');
 		$value = str_replace('#', '', $value);
@@ -278,34 +280,54 @@ class tx_jftcaforms_tceFunc
 		if ($emptyValue) {
 			$checkboxCode = '<input type="checkbox" class="checkbox" id="'.$id_checkbox.'" name="'.$PA['itemFormElName'].'_cb"'.($disabled ? ' checked="checked"' : '').' />';
 			$checkObserve .= "
-Event.observe('{$id_checkbox}', 'change', function(event){
+Event.observe('{$id_checkbox}', 'change', function(event) {
 	if (this.checked) {
-		$('{$id_picker}').value = '';
+		$('$id_picker').value = '';
+		$('$preview').setStyle({ backgroundColor: 'transparent' });
 	}
-	$('{$id_picker}').disabled = this.checked;
+	$('$id_picker').disabled = this.checked;
 });";
 		}
 		$checkObserve .= "
-Event.observe('{$id_picker}', 'change', function(event){
+Event.observe('$id_picker', 'change', function(event) {
 	var reg = /[0-9a-f]{6}/i;
-	if (! reg.test($('{$id_picker}').value)) {
-		$('{$id_picker}').value = '';
+	if (! reg.test($('$id_picker').value)) {
+		$('$id_picker').value = '';
+	} else {
+		$('$id_picker').value = $('$id_picker').value.toLowerCase();
 	}
-	$('{$id_picker}').value = $('{$id_picker}').value.toLowerCase();
 });";
 
 		// get the pagerenderer
 		$pagerender = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 
+		// Laod ExtJs
+		$pagerender->loadExtJs();
+
 		// Add the colorpicker scripts
 		$pagerender->addCssFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/colorpicker/css/colorpicker.css');
 		$pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/colorpicker/js/colorpicker.js', 'text/javascript', FALSE);
 
+		$code = "
+$pickerObj = new Object();
+$pickerObj.init = function(){
+	if ($('$id_picker') == undefined || !Ext.isReady) {
+		window.setTimeout(\"$pickerObj.init();\", 20);
+	} else {
+		var cp".md5($id_picker)." = new colorPicker('{$id_picker}', {
+			color:'#".($value ? $value : '000000')."',
+			previewElement:'{$preview}'
+		});{$checkObserve}
+	}
+};
+$pickerObj.init();";
 		// Add the colorpicker
-		$pagerender->addExtOnReadyCode("
-var cp".md5($id_picker)." = new colorPicker('{$id_picker}',{
-	color:'#".($value ? $value : '000000')."'
-});{$checkObserve}");
+		if ($fObj->inline->isAjaxCall) {
+			$pagerender->addJsInlineCode("ColorPicker", $code, FALSE);
+		} else {
+			$pagerender->addExtOnReadyCode($code);
+		}
+
 
 		return '' .
 		'<div class="t3-form-field t3-form-field-flex">' .
@@ -313,6 +335,9 @@ var cp".md5($id_picker)." = new colorPicker('{$id_picker}',{
 				$checkboxCode .
 			'</td><td>' .
 				'#<input type="text" name="'.$PA['itemFormElName'].'" id="'.$id_picker.'" value="'.$value.'" size="6"'.($disabled ? ' disabled="disabled"' : '').' onfocus="blur()" />' .
+			'</td>' .
+			'<td style="padding:4px;border:1px solid #888;background-color:#fff;">' .
+				'<div id="'.$preview.'" style="width:15px;height:15px;"></div>' .
 			'</td></tr></table>' .
 		'</div>';
 	}
