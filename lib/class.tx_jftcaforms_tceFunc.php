@@ -261,7 +261,9 @@ class tx_jftcaforms_tceFunc
 		$value = ($PA['itemFormElValue'] ? $PA['itemFormElValue'] : '');
 		$value = str_replace('#', '', $value);
 		if (strlen($value) > 0 && ! preg_match("/[0-9a-f]{6}/i", $value)) {
-			t3lib_div::devLog('Value "'.$value.'" is no valid HEX-value', 'jftcaforms', 1);
+			if ($value != 'on') {
+				t3lib_div::devLog('Value "'.$value.'" is no valid HEX-value', 'jftcaforms', 1);
+			}
 			$value = '';
 		}
 
