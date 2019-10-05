@@ -1,3 +1,3 @@
 2019-10-05  Franz Holzinger  <franz@ttproducts.de>
-
+    * Remove support for TYPO3 6.2, TYPO3 4.5 and older
     * Initial version as fork from jftcaforms 0.2.5 by Juergen Furrer

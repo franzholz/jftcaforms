@@ -149,98 +149,75 @@ class tx_jftcaforms_tceFunc
 	public function getExtSpinner($PA, &$fObj)
 	{
 		$conf = $PA['fieldConf']['config'];
-		if (class_exists(t3lib_utility_VersionNumber) && t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-			// Fallback if the used Typo3 Version is older then 4.5
-			t3lib_div::devLog("ExtSpinner available in Typo3 4.5.x", 'jftcaform', 3);
-			$upper = (is_numeric($conf['range']['upper']) ? $conf['range']['upper'] : '100');
-			$PA['fieldConf']['config'] = array(
-				'type' => 'input',
-				'max' => strlen($upper),
-				'size' => strlen($upper),
-				'range' => array(
-					'lower' => (is_numeric($conf['range']['lower']) ? $conf['range']['lower'] : '0'),
-					'upper' => $upper
-				),
-				'eval' => 'int',
-			);
-			if (isset($conf['default'])) {
-				$PA['fieldConf']['config']['default'] = intval($conf['default']);
-			}
-			if (isset($conf['emptyValue'])) {
-				$PA['fieldConf']['config']['checkbox'] = $conf['emptyValue'];
-			}
-			$tceforms = &$PA['pObj'];
-			return $tceforms->getSingleField_SW($PA['table'], $PA['field'], $PA['row'], $PA);
-		} else {
-			// Define the unique vars
-			$id_spinner = uniqid('tceforms-spinner-');
-			$id_checkbox = uniqid('tceforms-check-');
-			$var = uniqid('spinner_');
 
-			// define the options
-			if (is_numeric($conf['width'])) {
-				$option[] = "width: {$conf['width']}";
-			}
-			$lower = 0;
-			if (is_numeric($conf['range']['lower'])) {
-				$lower = $conf['range']['lower'];
-				$option[] = "minValue: {$lower}";
-			}
-			if (is_numeric($conf['range']['upper'])) {
-				$option[] = "maxValue: {$conf['range']['upper']}";
-			}
+        // Define the unique vars
+        $id_spinner = uniqid('tceforms-spinner-');
+        $id_checkbox = uniqid('tceforms-check-');
+        $var = uniqid('spinner_');
 
-			// 
-			$default = (is_numeric($conf['default']) ? $conf['default'] : $lower);
-			$value = (is_numeric($PA['itemFormElValue']) ? $PA['itemFormElValue'] : $default);
+        // define the options
+        if (is_numeric($conf['width'])) {
+            $option[] = "width: {$conf['width']}";
+        }
+        $lower = 0;
+        if (is_numeric($conf['range']['lower'])) {
+            $lower = $conf['range']['lower'];
+            $option[] = "minValue: {$lower}";
+        }
+        if (is_numeric($conf['range']['upper'])) {
+            $option[] = "maxValue: {$conf['range']['upper']}";
+        }
 
-			$emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
-			if (! is_numeric($PA['itemFormElValue']) && $emptyValue) {
-				$disabled = true;
-			} else {
-				$disabled = false;
-			}
+        // 
+        $default = (is_numeric($conf['default']) ? $conf['default'] : $lower);
+        $value = (is_numeric($PA['itemFormElValue']) ? $PA['itemFormElValue'] : $default);
 
-			$option[] = "disabled: ".($disabled ? 'true' : 'false');
+        $emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
+        if (! is_numeric($PA['itemFormElValue']) && $emptyValue) {
+            $disabled = true;
+        } else {
+            $disabled = false;
+        }
 
-			// get the pagerenderer
-			$pagerender = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+        $option[] = "disabled: ".($disabled ? 'true' : 'false');
 
-			if ($emptyValue) {
-				$pagerender->addExtOnReadyCode("
-				Ext.get('{$id_checkbox}').on('click', function(obj1, obj2) {
-					if (obj2.checked) {
-						Ext.get('{$id_spinner}').set({value: ''});
-						{$var}.disable();
-					} else {
-						{$var}.enable();
-						Ext.get('{$id_spinner}').set({value: '{$default}'});
-					}
-				});");
-				$checkboxCode = '<input type="checkbox" class="checkbox" id="'.$id_checkbox.'" name="'.$PA['itemFormElName'].'_cb"'.($disabled ? ' checked="checked"' : '').'>';
-			}
+        // get the pagerenderer
+        $pagerender = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 
-			// Add the Spinner Script
-			$pagerender->addCssFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/extjs/ux/css/Spinner.css');
-			$pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms')  . 'res/extjs/ux/Spinner.js');
-			$pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms')  . 'res/extjs/ux/SpinnerField.js');
+        if ($emptyValue) {
+            $pagerender->addExtOnReadyCode("
+            Ext.get('{$id_checkbox}').on('click', function(obj1, obj2) {
+                if (obj2.checked) {
+                    Ext.get('{$id_spinner}').set({value: ''});
+                    {$var}.disable();
+                } else {
+                    {$var}.enable();
+                    Ext.get('{$id_spinner}').set({value: '{$default}'});
+                }
+            });");
+            $checkboxCode = '<input type="checkbox" class="checkbox" id="'.$id_checkbox.'" name="'.$PA['itemFormElName'].'_cb"'.($disabled ? ' checked="checked"' : '').'>';
+        }
 
-			// Add the spinner
-			$pagerender->addExtOnReadyCode("
-			var {$var} = new Ext.ux.form.SpinnerField({
-				".implode(",\n	", $option)."
-			});
-			{$var}.applyToMarkup('{$id_spinner}');");
+        // Add the Spinner Script
+        $pagerender->addCssFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/extjs/ux/css/Spinner.css');
+        $pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms')  . 'res/extjs/ux/Spinner.js');
+        $pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms')  . 'res/extjs/ux/SpinnerField.js');
 
-			return '' .
-			'<div class="t3-form-field t3-form-field-flex">' .
-				'<table><tr><td>' .
-					$checkboxCode .
-				'</td><td>' .
-					'<input type="text" name="'.$PA['itemFormElName'].'" value="'.($disabled ? '' : $value).'" id="'.$id_spinner.'"/>' .
-				'</td></tr></table>' .
-			'</div>';
-		}
+        // Add the spinner
+        $pagerender->addExtOnReadyCode("
+        var {$var} = new Ext.ux.form.SpinnerField({
+            ".implode(",\n	", $option)."
+        });
+        {$var}.applyToMarkup('{$id_spinner}');");
+
+        return '' .
+        '<div class="t3-form-field t3-form-field-flex">' .
+            '<table><tr><td>' .
+                $checkboxCode .
+            '</td><td>' .
+                '<input type="text" name="'.$PA['itemFormElName'].'" value="'.($disabled ? '' : $value).'" id="'.$id_spinner.'"/>' .
+            '</td></tr></table>' .
+        '</div>';
 	}
 
 
