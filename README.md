@@ -9,7 +9,7 @@ Provides additional TCA Forms for the backend. At this moment these forms are su
 <table>
 	<tr><td>Version</td><td>0.3.0</td></tr>
 	<tr><td>Release date</td><td>04. October 2019</td></tr>
-	<tr><td>Author</td><td>Franz Holzinger, Juergen Furrer</td></tr>
+	<tr><td>Author</td><td>Franz Holzinger, Jürgen Furrer</td></tr>
 	<tr><td>Comment</td><td>Add color-picker preview (43858) / Fix color-picker in IRRE (43861)</td></tr>
 </table>
 

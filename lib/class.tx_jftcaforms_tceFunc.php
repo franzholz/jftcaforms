@@ -41,7 +41,7 @@ class tx_jftcaforms_tceFunc
 	 */
 	public function getExtSlider($PA, &$fObj)
 	{
-		$checkboxCode = NULL;
+		$checkboxCode = null;
 
 		// Define the unique vars
 		$id_slider = uniqid('tceforms-slider-');
@@ -75,9 +75,9 @@ class tx_jftcaforms_tceFunc
 
 		$emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
 		if (! is_numeric($PA['itemFormElValue']) && $emptyValue) {
-			$disabled = TRUE;
+			$disabled = true;
 		} else {
-			$disabled = FALSE;
+			$disabled = false;
 		}
 
 		$option[] = "disabled: ".($disabled ? 'true' : 'false');
@@ -100,7 +100,7 @@ class tx_jftcaforms_tceFunc
 				var v = this.maxValue - this.minValue;
 				return (v == 0 ? w : (w/v));
 			}
-		});", TRUE);
+		});", true);
 
 		// Add the slider
 		$pagerender->addExtOnReadyCode("
@@ -196,9 +196,9 @@ class tx_jftcaforms_tceFunc
 
 			$emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
 			if (! is_numeric($PA['itemFormElValue']) && $emptyValue) {
-				$disabled = TRUE;
+				$disabled = true;
 			} else {
-				$disabled = FALSE;
+				$disabled = false;
 			}
 
 			$option[] = "disabled: ".($disabled ? 'true' : 'false');
@@ -271,12 +271,12 @@ class tx_jftcaforms_tceFunc
 
 		$emptyValue = ($conf['emptyValue'] ? $conf['emptyValue'] : '0');
 		if (! $value && $emptyValue) {
-			$disabled = TRUE;
+			$disabled = true;
 		} else {
-			$disabled = FALSE;
+			$disabled = false;
 		}
 
-		$checkObserve = NULL;
+		$checkObserve = null;
 		if ($emptyValue) {
 			$checkboxCode = '<input type="checkbox" class="checkbox" id="'.$id_checkbox.'" name="'.$PA['itemFormElName'].'_cb"'.($disabled ? ' checked="checked"' : '').' />';
 			$checkObserve .= "
@@ -306,7 +306,7 @@ Event.observe('$id_picker', 'change', function(event) {
 
 		// Add the colorpicker scripts
 		$pagerender->addCssFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/colorpicker/css/colorpicker.css');
-		$pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/colorpicker/js/colorpicker.js', 'text/javascript', FALSE);
+		$pagerender->addJsFile(t3lib_extMgm::extRelPath('jftcaforms') . 'res/colorpicker/js/colorpicker.js', 'text/javascript', false);
 
 		$code = "
 $pickerObj = new Object();
@@ -323,7 +323,7 @@ $pickerObj.init = function(){
 $pickerObj.init();";
 		// Add the colorpicker
 		if ($fObj->inline->isAjaxCall) {
-			$pagerender->addJsInlineCode("ColorPicker", $code, FALSE);
+			$pagerender->addJsInlineCode("ColorPicker", $code, false);
 		} else {
 			$pagerender->addExtOnReadyCode($code);
 		}
@@ -347,4 +347,4 @@ $pickerObj.init();";
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/jftcaforms/lib/class.tx_jftcaforms_tceFunc.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/jftcaforms/lib/class.tx_jftcaforms_tceFunc.php']);
 }
-?>
+

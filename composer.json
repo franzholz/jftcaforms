@@ -28,17 +28,15 @@
   ],
   "require": {
     "php": ">=5.5.0,<7.3.99",
-    "typo3/cms-core": ">=7.6.0,<8.7.99",
-    "bugfix/patchlayout": ">=0.1.0"
+    "typo3/cms-core": ">=7.6.0,<8.7.99"
   },
   "autoload": {
     "psr-4": {
-      "JambageCom\\Jfmulticontent\\": "Classes"
+      "JambageCom\\Jftcaforms\\": "Classes"
     },
     "classmap": [
       "Classes",
-      "lib",
-      "pi1"
+      "lib"
     ]
   },
   "replace": {

@@ -1,52 +1,37 @@
 <?php
 
-/***************************************************************
- * Extension Manager/Repository config file for ext "jftcaforms".
- *
- * Auto generated 29-01-2013 16:27
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
+########################################################################
+# Extension Manager/Repository config file for ext "jftcaforms".
+########################################################################
 
-$EM_CONF[$_EXTKEY] = array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'Additional TCA Forms',
 	'description' => 'Provides additional TCA Forms for the backend. At this moment these forms are supported: Slider',
 	'category' => 'be',
-	'shy' => 0,
-	'version' => '0.2.5',
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'loadOrder' => '',
+	'shy' => 1,
+	'version' => '0.3.0',
 	'module' => '',
 	'state' => 'beta',
-	'uploadfolder' => 0,
+	'uploadfolder' => 1,
 	'createDirs' => '',
 	'modify_tables' => '',
-	'clearcacheonload' => 0,
+	'clearcacheonload' => 1,
 	'lockType' => '',
-	'author' => 'Juergen Furrer',
-	'author_email' => 'juergen.furrer@gmail.com',
+	'author' => 'Franz Holzinger, Juergen Furrer',
+	'author_email' => 'franz@ttproducts.de',
 	'author_company' => '',
-	'CGLcompliance' => NULL,
-	'CGLcompliance_note' => NULL,
-	'constraints' => 
-	array (
-		'depends' => 
-		array (
+	'CGLcompliance' => '',
+	'CGLcompliance_note' => '',
+	'constraints' => array(
+		'depends' => array(
 			'cms' => '',
-			'php' => '5.0.0-0.0.0',
-			'typo3' => '4.3.0-0.0.0',
+			'php' => '5.5.0-7.3.0',
+			'typo3' => '7.6.0-8.7.99'
 		),
-		'conflicts' => 
-		array (
+		'conflicts' => array(
 		),
-		'suggests' => 
-		array (
+		'suggests' => array(
 		),
 	),
 );
 
-?>
