@@ -1,3 +1,7 @@
+2019-10-07  Franz Holzinger  <franz@ttproducts.de>
+    * I abandon the development, because TYPO3 8 already offers a replacement for these TCA forms. See https://github.com/a7digital/imagecycle .
+
 2019-10-05  Franz Holzinger  <franz@ttproducts.de>
+    * extract Classes/Form/Element/SliderElement from lib/class.tx_jftcaforms_tceFunc.php function getExtSlider
     * Remove support for TYPO3 6.2, TYPO3 4.5 and older
     * Initial version as fork from jftcaforms 0.2.5 by Juergen Furrer

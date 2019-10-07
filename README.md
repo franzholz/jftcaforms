@@ -16,10 +16,11 @@ Provides additional TCA Forms for the backend. At this moment these forms are su
 
 
 ## TYPO3 Versions
-I have started to develop the existing jftcaforms extension for the TYPO3 version 8.7. If persons are paying for my efforts, then I will continue the work for TYPO3 9 and future versions.
-
+I have stopped to continue this development any further, because TYPO3 8 already containts a slider and a colour picker (colorpicker).
 
 ## Contributions
 This git version is based on the release into the [TYPO3 Extension Repository](http://www.typo3.org/extensions/).
-You are invited to give comments and to make bug reports on this Github repository.
+
+# This fork is closed!
+
 
